@@ -1,7 +1,8 @@
 package nl.louisa.booking.features;
 
+import nl.louisa.booking.company.domain.Employee;
 import nl.louisa.booking.employee.service.BookingService;
-import nl.louisa.booking.hotel.service.CompanyService;
+import nl.louisa.booking.company.service.CompanyService;
 import nl.louisa.booking.hotel.service.HotelService;
 import nl.louisa.booking.hotel.domain.Hotel;
 import nl.louisa.booking.shared.repository.Repository;
@@ -25,9 +26,10 @@ public class EmployeeFeaturesTest {
 
     @BeforeEach
     void setUp() {
+        final Repository<Employee> employeeRepository = new Repository<>();
         final Repository<Hotel> hotelRepository = new Repository<>();
 
-        companyService = new CompanyService();
+        companyService = new CompanyService(employeeRepository);
         hotelService = new HotelService(hotelRepository);
         bookingService = new BookingService();
     }
