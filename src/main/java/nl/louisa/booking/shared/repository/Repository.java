@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.lang.String.*;
 
-public class Repository<T> {
+public class Repository<T extends Entity> {
     private final List<T> entities ;
     private T nullValue = null;
 
@@ -23,10 +23,10 @@ public class Repository<T> {
     }
 
     private void validatePrimaryKey(T entity) {
-        if (exists(getId(entity))){
+        if (exists(entity.getId())){
             throw new RepositoryException(format("entity '%s' already exists [id=%s]",
                     entity.getClass().getSimpleName(),
-                    getId(entity)));
+                    entity.getId()));
         }
     }
 
@@ -39,14 +39,14 @@ public class Repository<T> {
     }
 
     public void upsert(T entity) {
-        T existingEntity = findBy(getId(entity));
+        T existingEntity = findBy(entity.getId());
         delete(existingEntity);
         create(entity);
     }
 
     public T findBy(String id) {
         return entities.stream()
-                .filter(e -> getId(e).equals(id))
+                .filter(e -> e.getId().equals(id))
                 .findFirst()
                 .orElse(this.nullValue);
     }
@@ -63,7 +63,4 @@ public class Repository<T> {
         return nullValue;
     }
 
-    private String getId(T entity) {
-        return ((Entity) entity).getId();
-    }
 }
