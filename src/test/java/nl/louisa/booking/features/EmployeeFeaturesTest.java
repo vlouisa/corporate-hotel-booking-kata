@@ -3,6 +3,8 @@ package nl.louisa.booking.features;
 import nl.louisa.booking.employee.service.BookingService;
 import nl.louisa.booking.hotel.service.CompanyService;
 import nl.louisa.booking.hotel.service.HotelService;
+import nl.louisa.booking.hotel.domain.Hotel;
+import nl.louisa.booking.shared.repository.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +25,10 @@ public class EmployeeFeaturesTest {
 
     @BeforeEach
     void setUp() {
+        final Repository<Hotel> hotelRepository = new Repository<>();
+
         companyService = new CompanyService();
-        hotelService = new HotelService();
+        hotelService = new HotelService(hotelRepository);
         bookingService = new BookingService();
     }
 
