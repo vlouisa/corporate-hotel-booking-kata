@@ -9,7 +9,7 @@ import nl.louisa.booking.employee.domain.Booking;
 import nl.louisa.booking.employee.domain.BookingCheck;
 import nl.louisa.booking.employee.domain.DateCheck;
 import nl.louisa.booking.employee.domain.RoomTypeCheck;
-import nl.louisa.booking.employee.service.BookingChecks;
+import nl.louisa.booking.employee.service.BookingChecker;
 import nl.louisa.booking.employee.service.BookingService;
 import nl.louisa.booking.hotel.domain.Hotel;
 import nl.louisa.booking.hotel.service.HotelService;
@@ -58,9 +58,9 @@ public class EmployeeFeaturesTest {
         final BookingCheck dateCheck = new DateCheck();
         final BookingCheck roomTypeCheck = new RoomTypeCheck(hotelRepository);
         final BookingCheck policyCheck = new PolicyCheck(policyService);
-        final BookingChecks bookingChecks = new BookingChecks(dateCheck, roomTypeCheck, policyCheck);
+        final BookingChecker bookingChecker = new BookingChecker(dateCheck, roomTypeCheck, policyCheck);
 
-        bookingService = new BookingService(bookingChecks, identity, bookingRepository);
+        bookingService = new BookingService(bookingChecker, identity, bookingRepository);
     }
 
     @Test

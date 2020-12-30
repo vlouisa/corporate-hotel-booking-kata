@@ -19,7 +19,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(MockitoExtension.class)
-class BookingChecksTest {
+class BookingCheckerTest {
     private static final LocalDate MARCH_3RD = LocalDate.of(2020, 3, 3);
     private static final LocalDate MARCH_9TH = LocalDate.of(2020, 3, 9);
     private static final BookingRequest BOOKING_REQUEST = new BookingRequest("PP", "PAH", RoomType.SINGLE, MARCH_3RD, MARCH_9TH);
@@ -32,16 +32,16 @@ class BookingChecksTest {
     private BookingCheck thirdCheck;
 
 
-    private BookingChecks bookingChecks;
+    private BookingChecker bookingChecker;
 
     @BeforeEach
     void setUp() {
-        bookingChecks = new BookingChecks(firstCheck, secondCheck, thirdCheck);
+        bookingChecker = new BookingChecker(firstCheck, secondCheck, thirdCheck);
     }
 
     @Test
     void should_execute_all_checks_in_correct_order() {
-        bookingChecks.execute(BOOKING_REQUEST);
+        bookingChecker.validate(BOOKING_REQUEST);
 
         InOrder inOrder = inOrder(firstCheck, secondCheck, thirdCheck);
         inOrder.verify(firstCheck).doCheck(BOOKING_REQUEST);
@@ -53,7 +53,7 @@ class BookingChecksTest {
     void should_execute_all_checks_until_exception_is_thrown() {
         doThrow(new IllegalStateException()).when(secondCheck).doCheck(BOOKING_REQUEST);
 
-        assertThatThrownBy(() -> bookingChecks.execute(BOOKING_REQUEST))
+        assertThatThrownBy(() -> bookingChecker.validate(BOOKING_REQUEST))
                 .isInstanceOf(IllegalStateException.class);
 
         InOrder inOrder = inOrder(firstCheck, secondCheck);
@@ -65,7 +65,7 @@ class BookingChecksTest {
 
     @Test
     void should_do_nothing_when_no_checks_defined() {
-        bookingChecks = new BookingChecks();
-        assertThatNoException().isThrownBy(() -> bookingChecks.execute(BOOKING_REQUEST));
+        bookingChecker = new BookingChecker();
+        assertThatNoException().isThrownBy(() -> bookingChecker.validate(BOOKING_REQUEST));
     }
 }

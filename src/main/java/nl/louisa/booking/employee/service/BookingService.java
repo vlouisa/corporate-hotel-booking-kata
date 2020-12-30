@@ -9,19 +9,19 @@ import nl.louisa.booking.shared.repository.Repository;
 import java.time.LocalDate;
 
 public class BookingService {
-    private final BookingChecks bookingChecks;
+    private final BookingChecker bookingChecker;
     private final Identity identity;
     private final Repository<Booking> bookingRepository;
 
-    public BookingService(BookingChecks bookingChecks, Identity identity, Repository<Booking> bookingRepository){
-        this.bookingChecks = bookingChecks;
+    public BookingService(BookingChecker bookingChecker, Identity identity, Repository<Booking> bookingRepository){
+        this.bookingChecker = bookingChecker;
         this.identity = identity;
         this.bookingRepository = bookingRepository;
     }
 
     public Booking book(String employeeId, String hotelId, RoomType roomType, LocalDate checkIn, LocalDate checkOut) {
         final BookingRequest bookingRequest = new BookingRequest(employeeId, hotelId, roomType, checkIn, checkOut);
-        bookingChecks.execute(bookingRequest);
+        bookingChecker.validate(bookingRequest);
 
         final Booking booking = new Booking(
                 identity.generate(),

@@ -27,7 +27,7 @@ class BookingServiceTest {
     Repository<Booking> bookingRepository;
 
     @Mock
-    private BookingChecks bookingChecks;
+    private BookingChecker bookingChecker;
     @Mock
     private Identity identity;
 
@@ -35,12 +35,12 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        bookingService = new BookingService(bookingChecks, identity, bookingRepository);
+        bookingService = new BookingService(bookingChecker, identity, bookingRepository);
     }
 
     @Test
     void should_throw_exception_when_check_is_not_ok() {
-        doThrow(new IllegalStateException("Check failed")).when(bookingChecks).execute(new BookingRequest("PP", "PAH", SINGLE, MARCH_3RD, MARCH_9TH));
+        doThrow(new IllegalStateException("Check failed")).when(bookingChecker).validate(new BookingRequest("PP", "PAH", SINGLE, MARCH_3RD, MARCH_9TH));
 
         assertThatThrownBy(() -> bookingService.book("PP", "PAH", SINGLE, MARCH_3RD, MARCH_9TH))
                 .isInstanceOf(IllegalStateException.class);

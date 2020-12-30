@@ -7,14 +7,14 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class BookingChecks {
+public class BookingChecker {
     private final List<BookingCheck> checks;
 
-    public BookingChecks(BookingCheck ... checks ) {
+    public BookingChecker(BookingCheck ... checks ) {
         this.checks = asList(checks);
     }
 
-    public void execute(BookingRequest bookingRequest) {
+    public void validate(BookingRequest bookingRequest) {
         checks.forEach(check -> check.doCheck(bookingRequest));
     }
 }
