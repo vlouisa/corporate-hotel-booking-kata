@@ -1,23 +1,24 @@
 package nl.louisa.booking.employee.domain;
 
 import nl.louisa.booking.hotel.domain.Hotel;
+import nl.louisa.booking.hotel.service.HotelService;
 import nl.louisa.booking.shared.repository.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class RoomAvailabilityCheck implements BookingCheck {
-    private final Repository<Hotel> hotelRepository;
+    private final HotelService hotelService;
     private final Repository<Booking> bookingRepository;
 
-    public RoomAvailabilityCheck(Repository<Hotel> hotelRepository, Repository<Booking> bookingRepository) {
-        this.hotelRepository = hotelRepository;
+    public RoomAvailabilityCheck(HotelService hotelService, Repository<Booking> bookingRepository) {
+        this.hotelService = hotelService;
         this.bookingRepository = bookingRepository;
     }
 
     @Override
     public void doCheck(BookingRequest bookingRequest) {
-        Hotel hotel = hotelRepository.findBy(bookingRequest.getHotelId());
+        Hotel hotel = hotelService.findHotelBy(bookingRequest.getHotelId());
         long roomCapacity = hotel.getRoomTypes().get(bookingRequest.getRoomType());
 
         List<Booking> bookings = bookingRepository.findWhere(

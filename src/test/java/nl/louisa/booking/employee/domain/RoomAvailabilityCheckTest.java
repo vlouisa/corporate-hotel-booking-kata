@@ -1,6 +1,7 @@
 package nl.louisa.booking.employee.domain;
 
 import nl.louisa.booking.hotel.domain.Hotel;
+import nl.louisa.booking.hotel.service.HotelService;
 import nl.louisa.booking.shared.repository.Repository;
 import nl.louisa.booking.util.LocalDateConverter;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,7 @@ class RoomAvailabilityCheckTest {
     private static final LocalDate FEBRUARY_3RD = LocalDate.of(2020,2,3);
 
     @Mock
-    private Repository<Hotel> hotelRepository;
+    private HotelService hotelService;
     @Mock
     private Repository<Booking> bookingRepository;
 
@@ -37,14 +38,14 @@ class RoomAvailabilityCheckTest {
 
     @BeforeEach
     void setUp() {
-        when(hotelRepository.findBy("PAH")).thenReturn(
+        when(hotelService.findHotelBy("PAH")).thenReturn(
                 aHotel()
                     .basedOn(new Hotel("PAH", "Palm Hotel"))
                     .saveRoom(SINGLE, 1)
                     .build()
         );
 
-        check = new RoomAvailabilityCheck(hotelRepository, bookingRepository);
+        check = new RoomAvailabilityCheck(hotelService, bookingRepository);
     }
 
     @Test

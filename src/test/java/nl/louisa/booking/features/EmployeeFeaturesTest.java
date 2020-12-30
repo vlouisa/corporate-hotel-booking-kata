@@ -64,7 +64,7 @@ public class EmployeeFeaturesTest {
         final BookingCheck dateCheck = new DateCheck();
         final BookingCheck roomTypeCheck = new RoomTypeCheck(hotelRepository);
         final BookingCheck policyCheck = new PolicyCheck(policyService);
-        final BookingCheck roomAvailabilityCheck = new RoomAvailabilityCheck(hotelRepository, bookingRepository);
+        final BookingCheck roomAvailabilityCheck = new RoomAvailabilityCheck(hotelService, bookingRepository);
         final BookingChecker bookingChecker = new BookingChecker(dateCheck, roomTypeCheck, policyCheck, roomAvailabilityCheck);
 
         bookingService = new BookingService(bookingChecker, identity, bookingRepository);
