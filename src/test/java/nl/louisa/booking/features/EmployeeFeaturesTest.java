@@ -2,6 +2,7 @@ package nl.louisa.booking.features;
 
 import nl.louisa.booking.company.domain.Employee;
 import nl.louisa.booking.employee.domain.BookingCheck;
+import nl.louisa.booking.employee.domain.DateCheck;
 import nl.louisa.booking.employee.service.BookingChecks;
 import nl.louisa.booking.employee.service.BookingService;
 import nl.louisa.booking.company.service.CompanyService;
@@ -32,8 +33,9 @@ public class EmployeeFeaturesTest {
         final Repository<Employee> employeeRepository = new Repository<>();
         final Repository<Hotel> hotelRepository = new Repository<>();
 
+        final BookingCheck dateCheck = new DateCheck();
         final BookingCheck roomTypeCheck = new RoomTypeCheck(hotelRepository);
-        final BookingChecks bookingChecks = new BookingChecks(roomTypeCheck);
+        final BookingChecks bookingChecks = new BookingChecks(dateCheck, roomTypeCheck);
 
         companyService = new CompanyService(employeeRepository);
         hotelService = new HotelService(hotelRepository);
@@ -51,5 +53,17 @@ public class EmployeeFeaturesTest {
         assertThatThrownBy(() -> bookingService.book("BW", "WAS", DOUBLE, JUNE_1ST, JUNE_6TH))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Booking cancelled: Hotel does not provide requested room");
+    }
+
+    @Test
+    void booking_a_hotel_with_wrong_check_in_and_check_out_date() {
+        hotelService.addHotel("WAS", "Waldorf Astoria");
+        hotelService.setRoom("WAS", 5 , DOUBLE);
+
+        companyService.addEmployee("WEN", "BW");
+
+        assertThatThrownBy(() -> bookingService.book("BW", "WAS", DOUBLE, JUNE_6TH, JUNE_1ST))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Booking cancelled: Check-in should be before check-out");
     }
 }
