@@ -7,8 +7,10 @@ import lombok.ToString;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -32,7 +34,7 @@ class RepositoryTest {
 
         userRepository.create(BRUCE_BANNER);
 
-        assertThat(userRepository.findAll()).containsAll(asList(BRUCE_WAYNE, TONY_STARK, BRUCE_BANNER));
+        assertThat(userRepository.findAll()).contains(BRUCE_WAYNE, TONY_STARK, BRUCE_BANNER);
     }
 
 
@@ -51,7 +53,7 @@ class RepositoryTest {
 
         userRepository.upsert(BILL_WOODRUFF);
 
-        assertThat(userRepository.findAll()).containsAll(asList(BILL_WOODRUFF, TONY_STARK));
+        assertThat(userRepository.findAll()).contains(BILL_WOODRUFF, TONY_STARK);
         assertThat(userRepository.findAll().size()).isEqualTo(2);
     }
 
@@ -61,7 +63,7 @@ class RepositoryTest {
 
         userRepository.upsert(TONY_STARK);
 
-        assertThat(userRepository.findAll()).containsAll(asList(BRUCE_WAYNE, TONY_STARK));
+        assertThat(userRepository.findAll()).contains(BRUCE_WAYNE, TONY_STARK);
         assertThat(userRepository.findAll().size()).isEqualTo(2);
     }
 
@@ -71,7 +73,7 @@ class RepositoryTest {
 
         userRepository.delete(BRUCE_WAYNE);
 
-        assertThat(userRepository.findAll()).containsAll(singletonList(TONY_STARK));
+        assertThat(userRepository.findAll()).contains(TONY_STARK);
         assertThat(userRepository.findAll().size()).isEqualTo(1);
 
     }
@@ -89,6 +91,83 @@ class RepositoryTest {
         userRepository.setNullValue(NO_USER);
 
         assertThat(userRepository.findBy("VL")).isEqualTo(NO_USER);
+    }
+
+    @Test
+    void should_return_entities_based_on_criteria() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        final List<User> users = userRepository.findWhere(user -> user.getUserName().startsWith("Bruce"));
+
+        assertThat(users).contains(BRUCE_BANNER, BRUCE_WAYNE);
+        assertThat(users.size()).isEqualTo(2);
+
+    }
+
+    @Test
+    void should_return_all_entities_given_criteria_is_null() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        final List<User> users = userRepository.findWhere(null);
+
+        assertThat(users).contains(BRUCE_BANNER, BRUCE_WAYNE, TONY_STARK);
+        assertThat(users.size()).isEqualTo(3);
+
+    }
+
+    @Test
+    void should_return_all_entities_given_single_criteria_is_null() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        final List<User> users = userRepository.findWhere((Predicate<User>) null);
+
+        assertThat(users).contains(BRUCE_BANNER, BRUCE_WAYNE, TONY_STARK);
+        assertThat(users.size()).isEqualTo(3);
+
+    }
+
+    @Test
+    void should_return_all_entities_given_multiple_null_criteria() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        final List<User> users = userRepository.findWhere(null, null);
+
+        assertThat(users).contains(BRUCE_BANNER, BRUCE_WAYNE, TONY_STARK);
+        assertThat(users.size()).isEqualTo(3);
+
+    }
+
+    @Test
+    void should_return_entities_based_on_multiple_criteria() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        final List<User> users = userRepository.findWhere(
+                user -> user.getUserName().startsWith("Bruce"),
+                user -> user.getUserName().contains("Wayne")
+        );
+
+        assertThat(users).contains(BRUCE_WAYNE);
+        assertThat(users.size()).isEqualTo(1);
+
+    }
+
+    @Test
+    void should_count_entities_by_a_given_criteria() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        assertThat(userRepository.countWhere(
+                user -> user.getUserName().startsWith("Bruce")
+        )).isEqualTo(2);
+    }
+
+    @Test
+    void should_count_entities_by_multiple_given_criteria() {
+        initializeRepository(BRUCE_WAYNE, BRUCE_BANNER, TONY_STARK);
+
+        assertThat(userRepository.countWhere(
+                user -> user.getUserName().startsWith("Bruce"),
+                user -> user.getUserName().contains("Wayne")
+        )).isEqualTo(1);
     }
 
     private void initializeRepository(User ... users) {

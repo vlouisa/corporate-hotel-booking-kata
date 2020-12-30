@@ -2,8 +2,12 @@ package nl.louisa.booking.shared.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
+import static java.util.Arrays.stream;
 
 public class Repository<T extends Entity> {
     private final List<T> entities ;
@@ -49,6 +53,26 @@ public class Repository<T extends Entity> {
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
                 .orElse(this.nullValue);
+    }
+
+    @SafeVarargs
+    public final List<T> findWhere(Predicate<T>... criteria) {
+        List<Predicate<T>> predicates = new ArrayList<>();
+
+        if (criteria != null) {
+            stream(criteria)
+                    .filter(Objects::nonNull)
+                    .forEach(predicates::add);
+        }
+
+        return entities.stream()
+                    .filter(predicates.stream().reduce(p ->true, Predicate::and))
+                    .collect(Collectors.toList());
+    }
+
+    @SafeVarargs
+    public final long countWhere(Predicate<T>... criteria){
+        return findWhere(criteria).size();
     }
 
     public void delete(T entity) {
