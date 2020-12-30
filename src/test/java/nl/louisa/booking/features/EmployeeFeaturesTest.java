@@ -13,6 +13,7 @@ import nl.louisa.booking.employee.service.BookingChecks;
 import nl.louisa.booking.employee.service.BookingService;
 import nl.louisa.booking.hotel.domain.Hotel;
 import nl.louisa.booking.hotel.service.HotelService;
+import nl.louisa.booking.shared.Identity;
 import nl.louisa.booking.shared.repository.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,9 @@ public class EmployeeFeaturesTest {
         final BookingCheck policyCheck = new PolicyCheck(policyService);
         final BookingChecks bookingChecks = new BookingChecks(dateCheck, roomTypeCheck, policyCheck);
 
-        bookingService = new BookingService(bookingChecks);
+        final Identity identity = new Identity();
+
+        bookingService = new BookingService(bookingChecks, identity);
     }
 
     @Test
