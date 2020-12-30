@@ -2,6 +2,7 @@ package nl.louisa.booking.features;
 
 import nl.louisa.booking.company.domain.Employee;
 import nl.louisa.booking.company.domain.Policy;
+import nl.louisa.booking.company.domain.PolicyCheck;
 import nl.louisa.booking.company.service.CompanyService;
 import nl.louisa.booking.company.service.PolicyService;
 import nl.louisa.booking.employee.domain.BookingCheck;
@@ -39,13 +40,15 @@ public class EmployeeFeaturesTest {
         final Repository<Hotel> hotelRepository = new Repository<>();
         final Repository<Policy> policyRepository = new Repository<>();
 
-        final BookingCheck dateCheck = new DateCheck();
-        final BookingCheck roomTypeCheck = new RoomTypeCheck(hotelRepository);
-        final BookingChecks bookingChecks = new BookingChecks(dateCheck, roomTypeCheck);
-
         policyService = new PolicyService(policyRepository, employeeRepository);
         companyService = new CompanyService(employeeRepository);
         hotelService = new HotelService(hotelRepository);
+
+        final BookingCheck dateCheck = new DateCheck();
+        final BookingCheck roomTypeCheck = new RoomTypeCheck(hotelRepository);
+        final BookingCheck policyCheck = new PolicyCheck(policyService);
+        final BookingChecks bookingChecks = new BookingChecks(dateCheck, roomTypeCheck, policyCheck);
+
         bookingService = new BookingService(bookingChecks);
     }
 
@@ -79,6 +82,7 @@ public class EmployeeFeaturesTest {
         hotelService.addHotel("WAS", "Waldorf Astoria");
         hotelService.setRoom("WAS", 10 , SINGLE);
         hotelService.setRoom("WAS", 5 , DOUBLE);
+        hotelService.setRoom("WAS", 1 , EXECUTIVE);
 
         companyService.addEmployee("WEN", "BW");
         policyService.setEmployeePolicy("BW", SINGLE, DOUBLE);
