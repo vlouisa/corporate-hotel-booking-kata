@@ -58,7 +58,7 @@ public class EmployeeFeaturesTest {
         final Repository<Booking> bookingRepository = new Repository<>();
 
         policyService = new PolicyService(policyRepository, employeeRepository);
-        companyService = new CompanyService(employeeRepository);
+        companyService = new CompanyService(employeeRepository, policyRepository);
         hotelService = new HotelService(hotelRepository);
 
         final BookingCheck dateCheck = new DateCheck();

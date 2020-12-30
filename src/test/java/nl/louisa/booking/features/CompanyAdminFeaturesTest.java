@@ -22,7 +22,7 @@ public class CompanyAdminFeaturesTest {
         final Repository<Employee> employeeRepository = new Repository<>();
         final Repository<Policy> policyRepository = new Repository<>();
 
-        companyService = new CompanyService(employeeRepository);
+        companyService = new CompanyService(employeeRepository, policyRepository);
         policyService = new PolicyService(policyRepository, employeeRepository);
     }
 
@@ -82,5 +82,16 @@ public class CompanyAdminFeaturesTest {
         assertThat(policyService.isBookingAllowed("Phoebe", SINGLE)).isTrue();
         assertThat(policyService.isBookingAllowed("Phoebe", DOUBLE)).isFalse();
         assertThat(policyService.isBookingAllowed("Phoebe", EXECUTIVE)).isFalse();
+    }
+    @Test
+    void deleting_employees() {
+        companyService.addEmployee("Central Perk", "Ross");
+        policyService.setEmployeePolicy("Ross", SINGLE);
+
+        assertThat(policyService.isBookingAllowed("Ross", SINGLE)).isTrue();
+
+        companyService.deleteEmployee("Ross");
+
+        assertThat(policyService.isBookingAllowed("Ross", SINGLE)).isFalse();
     }
 }
