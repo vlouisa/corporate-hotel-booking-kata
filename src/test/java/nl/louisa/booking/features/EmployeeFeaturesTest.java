@@ -8,6 +8,7 @@ import nl.louisa.booking.company.service.PolicyService;
 import nl.louisa.booking.employee.domain.Booking;
 import nl.louisa.booking.employee.domain.BookingCheck;
 import nl.louisa.booking.employee.domain.DateCheck;
+import nl.louisa.booking.employee.domain.RoomAvailabilityCheck;
 import nl.louisa.booking.employee.domain.RoomTypeCheck;
 import nl.louisa.booking.employee.service.BookingChecker;
 import nl.louisa.booking.employee.service.BookingService;
@@ -63,7 +64,8 @@ public class EmployeeFeaturesTest {
         final BookingCheck dateCheck = new DateCheck();
         final BookingCheck roomTypeCheck = new RoomTypeCheck(hotelRepository);
         final BookingCheck policyCheck = new PolicyCheck(policyService);
-        final BookingChecker bookingChecker = new BookingChecker(dateCheck, roomTypeCheck, policyCheck);
+        final BookingCheck roomAvailabilityCheck = new RoomAvailabilityCheck(hotelRepository, bookingRepository);
+        final BookingChecker bookingChecker = new BookingChecker(dateCheck, roomTypeCheck, policyCheck, roomAvailabilityCheck);
 
         bookingService = new BookingService(bookingChecker, identity, bookingRepository);
     }
@@ -127,8 +129,7 @@ public class EmployeeFeaturesTest {
     void booking_a_hotel_when_no_room_available_during_period() {
         when(identity.generate()).thenReturn(
                 "EA624220-4A96-11EB-B378-0242AC130002",
-                "87E05630-4AA2-11EB-B378-0242AC130002",
-                "DD520C3A-4AA2-11EB-B378-0242AC130002"
+                "87E05630-4AA2-11EB-B378-0242AC130002"
         );
 
         hotelService.addHotel("WAS", "Waldorf Astoria");

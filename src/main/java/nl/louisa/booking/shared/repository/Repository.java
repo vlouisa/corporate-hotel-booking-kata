@@ -55,8 +55,8 @@ public class Repository<T extends Entity> {
                 .orElse(this.nullValue);
     }
 
-    @SafeVarargs
-    public final List<T> findWhere(Predicate<T>... criteria) {
+
+    public List<T> findWhere(Predicate<T>... criteria) {
         List<Predicate<T>> predicates = new ArrayList<>();
 
         if (criteria != null) {
@@ -70,8 +70,7 @@ public class Repository<T extends Entity> {
                     .collect(Collectors.toList());
     }
 
-    @SafeVarargs
-    public final long countWhere(Predicate<T>... criteria){
+    public long countWhere(Predicate<T>... criteria){
         return findWhere(criteria).size();
     }
 
