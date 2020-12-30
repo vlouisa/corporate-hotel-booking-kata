@@ -33,11 +33,16 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeFeaturesTest {
+    private static final LocalDate MAY_29TH = LocalDate.of(2020, 5, 29);
+    private static final LocalDate JUNE_1ST = LocalDate.of(2020, 6, 1);
+    private static final LocalDate JUNE_2ND = LocalDate.of(2020, 6, 2);
+    private static final LocalDate JUNE_3RD = LocalDate.of(2020, 6, 3);
+    private static final LocalDate JUNE_4TH = LocalDate.of(2020, 6, 4);
+    private static final LocalDate JUNE_6TH = LocalDate.of(2020, 6, 6);
+
     @Mock
     private Identity identity;
 
-    private static final LocalDate JUNE_1ST = LocalDate.of(2020, 6, 1);
-    private static final LocalDate JUNE_6TH = LocalDate.of(2020, 6, 6);
 
     private PolicyService policyService;
     private CompanyService companyService;
@@ -116,6 +121,30 @@ public class EmployeeFeaturesTest {
         assertThatThrownBy(() -> bookingService.book("BW", "WAS", EXECUTIVE, JUNE_1ST, JUNE_6TH))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Booking cancelled: Room can't be booked because of policy");
+    }
+
+    @Test
+    void booking_a_hotel_when_no_room_available_during_period() {
+        when(identity.generate()).thenReturn(
+                "EA624220-4A96-11EB-B378-0242AC130002",
+                "87E05630-4AA2-11EB-B378-0242AC130002",
+                "DD520C3A-4AA2-11EB-B378-0242AC130002"
+        );
+
+        hotelService.addHotel("WAS", "Waldorf Astoria");
+        hotelService.setRoom("WAS", 2 , SUITE);
+
+        companyService.addEmployee("WEN", "TS");
+        companyService.addEmployee("WEN", "AO");
+
+        bookingService.book("TS", "WAS", SUITE, MAY_29TH, JUNE_3RD);
+        bookingService.book("AO", "WAS", SUITE, JUNE_2ND, JUNE_4TH);
+
+        companyService.addEmployee("WEN", "BW");
+
+        assertThatThrownBy(() -> bookingService.book("BW", "WAS", SUITE, JUNE_1ST, JUNE_6TH))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Booking cancelled: Room isn't available in requested period");
     }
 
     @Test
