@@ -5,6 +5,7 @@ import nl.louisa.booking.company.domain.Policy;
 import nl.louisa.booking.company.domain.PolicyCheck;
 import nl.louisa.booking.company.service.CompanyService;
 import nl.louisa.booking.company.service.PolicyService;
+import nl.louisa.booking.employee.domain.Booking;
 import nl.louisa.booking.employee.domain.BookingCheck;
 import nl.louisa.booking.employee.domain.DateCheck;
 import nl.louisa.booking.employee.domain.RoomTypeCheck;
@@ -22,6 +23,7 @@ import static nl.louisa.booking.hotel.domain.RoomType.DOUBLE;
 import static nl.louisa.booking.hotel.domain.RoomType.EXECUTIVE;
 import static nl.louisa.booking.hotel.domain.RoomType.SINGLE;
 import static nl.louisa.booking.hotel.domain.RoomType.SUITE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class EmployeeFeaturesTest {
@@ -107,4 +109,20 @@ public class EmployeeFeaturesTest {
                 .hasMessage("Booking cancelled: Room can't be booked because of policy");
     }
 
+    @Test
+    void booking_a_hotel_room_successfully() {
+        hotelService.addHotel("WAS", "Waldorf Astoria");
+        hotelService.setRoom("WAS", 2 , SUITE);
+
+        companyService.addEmployee("WEN", "BW");
+
+        final Booking booking = bookingService.book("BW", "WAS", SUITE, JUNE_1ST, JUNE_6TH);
+
+        assertThat(booking.getBookingId()).isEqualTo("EA624220-4A96-11EB-B378-0242AC130002");
+        assertThat(booking.getEmployeeId()).isEqualTo("BW");
+        assertThat(booking.getHotelId()).isEqualTo("WAS");
+        assertThat(booking.getRoomType()).isEqualTo(SUITE);
+        assertThat(booking.getCheckIn()).isEqualTo(JUNE_1ST);
+        assertThat(booking.getCheckOut()).isEqualTo(JUNE_6TH);
+    }
 }
