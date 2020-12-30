@@ -30,6 +30,6 @@ public class HotelService {
     }
 
     public Hotel findHotelBy(String hotelId) {
-        throw new UnsupportedOperationException();
+        return hotelRepository.findBy(hotelId);
     }
 }

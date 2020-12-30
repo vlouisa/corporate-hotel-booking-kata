@@ -12,6 +12,7 @@ import static nl.louisa.booking.hotel.builder.HotelBuilder.aHotel;
 import static nl.louisa.booking.hotel.domain.RoomType.DOUBLE;
 import static nl.louisa.booking.hotel.domain.RoomType.EXECUTIVE;
 import static nl.louisa.booking.hotel.domain.RoomType.SINGLE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -85,5 +86,24 @@ class HotelServiceTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Technical error while updating room details");
 
+    }
+
+    @Test
+    void should_find_hotel_by_id() {
+        when(hotelRepository.findBy("RTZ")).thenReturn(
+                aHotel()
+                        .basedOn(new Hotel("RTZ", "Ritz Carlton"))
+                        .saveRoom(SINGLE, 2)
+                        .saveRoom(DOUBLE, 3)
+                        .build());
+
+
+        assertThat(hotelService.findHotelBy("RTZ")).isEqualTo(
+                aHotel()
+                        .basedOn(new Hotel("RTZ", "Ritz Carlton"))
+                        .saveRoom(SINGLE, 2)
+                        .saveRoom(DOUBLE, 3)
+                        .build()
+        );
     }
 }
