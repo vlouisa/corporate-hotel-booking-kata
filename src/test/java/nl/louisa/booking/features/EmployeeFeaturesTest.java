@@ -91,4 +91,20 @@ public class EmployeeFeaturesTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Booking cancelled: Room can't be booked because of policy");
     }
+
+    @Test
+    void booking_a_hotel_when_company_policy_does_not_allow_booking() {
+        hotelService.addHotel("WAS", "Waldorf Astoria");
+        hotelService.setRoom("WAS", 10 , SINGLE);
+        hotelService.setRoom("WAS", 5 , DOUBLE);
+        hotelService.setRoom("WAS", 1 , EXECUTIVE);
+
+        companyService.addEmployee("WEN", "BW");
+        policyService.setCompanyPolicy("WEN", SINGLE, DOUBLE);
+
+        assertThatThrownBy(() -> bookingService.book("BW", "WAS", EXECUTIVE, JUNE_1ST, JUNE_6TH))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Booking cancelled: Room can't be booked because of policy");
+    }
+
 }
