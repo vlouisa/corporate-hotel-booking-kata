@@ -29,4 +29,7 @@ public class HotelService {
         }
     }
 
+    public Hotel findHotelBy(String hotelId) {
+        throw new UnsupportedOperationException();
+    }
 }
