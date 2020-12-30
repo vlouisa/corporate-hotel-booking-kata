@@ -1,8 +1,5 @@
-package nl.louisa.booking.employee.service;
+package nl.louisa.booking.employee.domain;
 
-import nl.louisa.booking.employee.domain.BookingCheck;
-import nl.louisa.booking.employee.domain.BookingRequest;
-import nl.louisa.booking.employee.domain.RoomTypeCheck;
 import nl.louisa.booking.hotel.domain.Hotel;
 import nl.louisa.booking.shared.repository.Repository;
 import org.junit.jupiter.api.BeforeEach;
