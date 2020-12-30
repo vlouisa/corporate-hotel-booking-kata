@@ -17,6 +17,9 @@ import nl.louisa.booking.shared.Identity;
 import nl.louisa.booking.shared.repository.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
@@ -26,8 +29,12 @@ import static nl.louisa.booking.hotel.domain.RoomType.SINGLE;
 import static nl.louisa.booking.hotel.domain.RoomType.SUITE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class EmployeeFeaturesTest {
+    @Mock
+    private Identity identity;
 
     private static final LocalDate JUNE_1ST = LocalDate.of(2020, 6, 1);
     private static final LocalDate JUNE_6TH = LocalDate.of(2020, 6, 6);
@@ -42,6 +49,7 @@ public class EmployeeFeaturesTest {
         final Repository<Employee> employeeRepository = new Repository<>();
         final Repository<Hotel> hotelRepository = new Repository<>();
         final Repository<Policy> policyRepository = new Repository<>();
+        final Repository<Booking> bookingRepository = new Repository<>();
 
         policyService = new PolicyService(policyRepository, employeeRepository);
         companyService = new CompanyService(employeeRepository);
@@ -52,9 +60,7 @@ public class EmployeeFeaturesTest {
         final BookingCheck policyCheck = new PolicyCheck(policyService);
         final BookingChecks bookingChecks = new BookingChecks(dateCheck, roomTypeCheck, policyCheck);
 
-        final Identity identity = new Identity();
-
-        bookingService = new BookingService(bookingChecks, identity);
+        bookingService = new BookingService(bookingChecks, identity, bookingRepository);
     }
 
     @Test
@@ -114,6 +120,8 @@ public class EmployeeFeaturesTest {
 
     @Test
     void booking_a_hotel_room_successfully() {
+        when(identity.generate()).thenReturn("EA624220-4A96-11EB-B378-0242AC130002");
+
         hotelService.addHotel("WAS", "Waldorf Astoria");
         hotelService.setRoom("WAS", 2 , SUITE);
 
