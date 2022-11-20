@@ -42,4 +42,12 @@ class CompanyServiceTest {
                 .isInstanceOf(CompanyApiException.class)
                 .hasMessage("Employee already exists");
     }
+    
+    @Test
+    void should_fetch_employee_by_id() {
+        
+        companyService.fetchEmployee("DIRK");
+        
+        verify(employeeRepository).findByEmployeeId("DIRK");
+    }
 }

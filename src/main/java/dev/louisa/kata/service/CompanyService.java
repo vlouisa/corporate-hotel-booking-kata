@@ -4,6 +4,8 @@ import dev.louisa.kata.domain.Employee;
 import dev.louisa.kata.exception.CompanyApiException;
 import dev.louisa.kata.repository.EmployeeRepository;
 
+import java.util.Optional;
+
 public class CompanyService {
 
     private final EmployeeRepository employeeRepository;
@@ -22,5 +24,9 @@ public class CompanyService {
         if (employeeRepository.findByEmployeeId(emplopyeeId).isPresent()) {
             throw new CompanyApiException("Employee already exists");
         }
+    }
+
+    public Optional<Employee> fetchEmployee(String employeeId) {
+        return employeeRepository.findByEmployeeId(employeeId);
     }
 }

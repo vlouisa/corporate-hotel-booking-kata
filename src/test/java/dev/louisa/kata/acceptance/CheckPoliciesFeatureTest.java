@@ -2,6 +2,7 @@ package dev.louisa.kata.acceptance;
 
 import dev.louisa.kata.domain.RoomType;
 import dev.louisa.kata.repository.EmployeeRepository;
+import dev.louisa.kata.repository.PolicyRepository;
 import dev.louisa.kata.service.BookingPolicyService;
 import dev.louisa.kata.service.CompanyService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CheckPoliciesFeature {
+public class CheckPoliciesFeatureTest {
     private static final String IBM = "IBM";
     private static final String TESLA = "TESLA";
     private static final String MICROSOFT = "MICROSOFT";
@@ -25,8 +26,8 @@ public class CheckPoliciesFeature {
 
     @BeforeEach
     void setUp() {
-        bookingPolicyService = new BookingPolicyService();
         companyService = new CompanyService(new EmployeeRepository());
+        bookingPolicyService = new BookingPolicyService(new PolicyRepository(), companyService);
     }
 
     @Test
@@ -38,6 +39,7 @@ public class CheckPoliciesFeature {
         
         bookingPolicyService.setCompanyPolicy(IBM, RoomType.SINGLE, RoomType.DOUBLE);
         bookingPolicyService.setCompanyPolicy(MICROSOFT, RoomType.SINGLE);
+        
         bookingPolicyService.setEmployeePolicy(SASKIA, RoomType.SINGLE, RoomType.DOUBLE);
         bookingPolicyService.setEmployeePolicy(IRIS, RoomType.SINGLE, RoomType.DOUBLE);
 
