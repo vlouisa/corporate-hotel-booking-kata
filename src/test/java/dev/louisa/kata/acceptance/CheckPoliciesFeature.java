@@ -1,6 +1,7 @@
 package dev.louisa.kata.acceptance;
 
 import dev.louisa.kata.domain.RoomType;
+import dev.louisa.kata.repository.EmployeeRepository;
 import dev.louisa.kata.service.BookingPolicyService;
 import dev.louisa.kata.service.CompanyService;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ public class CheckPoliciesFeature {
     @BeforeEach
     void setUp() {
         bookingPolicyService = new BookingPolicyService();
-        companyService = new CompanyService();
+        companyService = new CompanyService(new EmployeeRepository());
     }
 
     @Test
