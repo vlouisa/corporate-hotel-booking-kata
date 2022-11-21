@@ -2,6 +2,8 @@ package dev.louisa.kata.service;
 
 import dev.louisa.kata.domain.Employee;
 import dev.louisa.kata.domain.Policy;
+import dev.louisa.kata.domain.PolicyType;
+import dev.louisa.kata.exception.CompanyApiException;
 import dev.louisa.kata.repository.PolicyRepository;
 
 import java.util.Optional;
@@ -18,13 +20,28 @@ public class PolicySelector {
     }
     
     public Optional<Policy> getApplicablePolicyForEmployee(String employeeId) {
-        final Optional<Employee> employee = companyService.fetchEmployee(employeeId);
+        final Optional<Employee> employee = getEmployeeBy(employeeId);
+        validate(employee);
 
-        final Optional<Policy> employeePolicy = policyRepository.findPolicyBy(employee.get().getEmployeeId(), EMPLOYEE_POLICY);
+        final Optional<Policy> employeePolicy = getPolicyBy(employee.get().getEmployeeId(), EMPLOYEE_POLICY);
         if (employeePolicy.isPresent()) {
             return employeePolicy;
         }
 
-        return policyRepository.findPolicyBy(employee.get().getCompanyId(), COMPANY_POLICY);
+        return getPolicyBy(employee.get().getCompanyId(), COMPANY_POLICY);
+    }
+
+    private void validate(Optional<Employee> employee) {
+        if (employee.isEmpty()) {
+            throw new CompanyApiException("Employee does not exist");
+        }
+    }
+
+    private Optional<Employee> getEmployeeBy(String employeeId) {
+        return companyService.fetchEmployee(employeeId);
+    }
+
+    private Optional<Policy> getPolicyBy(String employeeId, PolicyType policyType) {
+        return policyRepository.findPolicyBy(employeeId, policyType);
     }
 }

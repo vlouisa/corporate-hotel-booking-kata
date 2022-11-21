@@ -1,6 +1,7 @@
 package dev.louisa.kata.service;
 
 import dev.louisa.kata.domain.*;
+import dev.louisa.kata.exception.CompanyApiException;
 import dev.louisa.kata.repository.PolicyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import static dev.louisa.kata.domain.PolicyType.*;
 import static dev.louisa.kata.domain.RoomType.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,5 +62,16 @@ class PolicySelectorTest {
         Optional<Policy> policy = policySelector.getApplicablePolicyForEmployee("MIKE");
         
         assertThat(policy).isEqualTo(Optional.of(new CompanyPolicy("JETBRAINS", asList(QUEEN, KING))));
+    }
+    
+    @Test
+    void should_throw_exception_when_employee_not_found() {
+        when(companyService.fetchEmployee("MIKE")).thenReturn(Optional.empty());
+        
+        
+        assertThatThrownBy(() -> policySelector.getApplicablePolicyForEmployee("MIKE"))
+                .isInstanceOf(CompanyApiException.class)
+                .hasMessage("Employee does not exist");
+        
     }
 }
