@@ -19,12 +19,12 @@ class BookingPolicyServiceTest {
     @Mock
     private PolicyRepository policyRepository;
     @Mock
-    private CompanyService companyService;
+    private PolicySelector policySelector;
     private BookingPolicyService bookingPolicyService;
 
     @BeforeEach
     void setUp() {
-        bookingPolicyService = new BookingPolicyService(policyRepository, companyService);
+        bookingPolicyService = new BookingPolicyService(policyRepository, policySelector);
     }
 
     @Test

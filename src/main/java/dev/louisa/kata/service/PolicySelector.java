@@ -41,7 +41,7 @@ public class PolicySelector {
         return companyService.fetchEmployee(employeeId);
     }
 
-    private Optional<Policy> getPolicyBy(String employeeId, PolicyType policyType) {
-        return policyRepository.findPolicyBy(employeeId, policyType);
+    private Optional<Policy> getPolicyBy(String id, PolicyType policyType) {
+        return policyRepository.findPolicyBy(id, policyType);
     }
 }

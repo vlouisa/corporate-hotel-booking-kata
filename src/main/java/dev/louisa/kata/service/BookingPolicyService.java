@@ -10,11 +10,11 @@ import static java.util.Arrays.asList;
 public class BookingPolicyService {
 
     private final PolicyRepository policyRepository;
-    private final CompanyService companyService;
-
-    public BookingPolicyService(PolicyRepository policyRepository, CompanyService companyService) {
+    private final PolicySelector policySelector;
+    
+    public BookingPolicyService(PolicyRepository policyRepository, PolicySelector policySelector) {
         this.policyRepository = policyRepository;
-        this.companyService = companyService;
+        this.policySelector = policySelector;
     }
     
     public void setCompanyPolicy(String companyId, RoomType... roomTypes) {
@@ -28,7 +28,6 @@ public class BookingPolicyService {
     }
 
     public boolean isBookingAllowed(String employeeId, RoomType roomType) {
-        PolicySelector policySelector = new PolicySelector(companyService, policyRepository);
         final Optional<Policy> policy = policySelector.getApplicablePolicyForEmployee(employeeId);
         return policy
                 .map(value -> value.getRoomTypes().contains(roomType))

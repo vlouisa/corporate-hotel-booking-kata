@@ -5,6 +5,7 @@ import dev.louisa.kata.repository.EmployeeRepository;
 import dev.louisa.kata.repository.PolicyRepository;
 import dev.louisa.kata.service.BookingPolicyService;
 import dev.louisa.kata.service.CompanyService;
+import dev.louisa.kata.service.PolicySelector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,8 +27,10 @@ public class CheckPoliciesFeatureTest {
 
     @BeforeEach
     void setUp() {
+        final PolicyRepository policyRepository = new PolicyRepository();
         companyService = new CompanyService(new EmployeeRepository());
-        bookingPolicyService = new BookingPolicyService(new PolicyRepository(), companyService);
+        
+        bookingPolicyService = new BookingPolicyService(policyRepository, new PolicySelector(companyService, policyRepository));
     }
 
     @Test
