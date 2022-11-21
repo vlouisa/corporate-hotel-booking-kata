@@ -1,6 +1,6 @@
 package dev.louisa.kata.company.service;
 
-import dev.louisa.kata.company.domain.Employee;
+import dev.louisa.kata.shared.domain.Employee;
 import dev.louisa.kata.company.exception.CompanyApiException;
 import dev.louisa.kata.company.repository.EmployeeRepository;
 

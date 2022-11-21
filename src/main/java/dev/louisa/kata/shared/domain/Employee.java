@@ -1,4 +1,4 @@
-package dev.louisa.kata.company.domain;
+package dev.louisa.kata.shared.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

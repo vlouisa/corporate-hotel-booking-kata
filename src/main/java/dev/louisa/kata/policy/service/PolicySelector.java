@@ -1,6 +1,6 @@
 package dev.louisa.kata.policy.service;
 
-import dev.louisa.kata.company.domain.Employee;
+import dev.louisa.kata.shared.domain.Employee;
 import dev.louisa.kata.policy.domain.Policy;
 import dev.louisa.kata.policy.domain.PolicyType;
 import dev.louisa.kata.company.service.CompanyService;
