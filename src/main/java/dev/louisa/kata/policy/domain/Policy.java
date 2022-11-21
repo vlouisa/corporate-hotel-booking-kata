@@ -1,4 +1,4 @@
-package dev.louisa.kata.domain;
+package dev.louisa.kata.policy.domain;
 
 import java.util.List;
 

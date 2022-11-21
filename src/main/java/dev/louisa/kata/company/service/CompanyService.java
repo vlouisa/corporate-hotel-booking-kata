@@ -1,8 +1,8 @@
-package dev.louisa.kata.service;
+package dev.louisa.kata.company.service;
 
-import dev.louisa.kata.domain.Employee;
-import dev.louisa.kata.exception.CompanyApiException;
-import dev.louisa.kata.repository.EmployeeRepository;
+import dev.louisa.kata.company.domain.Employee;
+import dev.louisa.kata.company.exception.CompanyApiException;
+import dev.louisa.kata.company.repository.EmployeeRepository;
 
 import java.util.Optional;
 

@@ -1,14 +1,15 @@
-package dev.louisa.kata.service;
+package dev.louisa.kata.policy.service;
 
-import dev.louisa.kata.domain.Employee;
-import dev.louisa.kata.domain.Policy;
-import dev.louisa.kata.domain.PolicyType;
-import dev.louisa.kata.exception.CompanyApiException;
-import dev.louisa.kata.repository.PolicyRepository;
+import dev.louisa.kata.company.domain.Employee;
+import dev.louisa.kata.policy.domain.Policy;
+import dev.louisa.kata.policy.domain.PolicyType;
+import dev.louisa.kata.company.exception.CompanyApiException;
+import dev.louisa.kata.company.service.CompanyService;
+import dev.louisa.kata.policy.repository.PolicyRepository;
 
 import java.util.Optional;
 
-import static dev.louisa.kata.domain.PolicyType.*;
+import static dev.louisa.kata.policy.domain.PolicyType.*;
 
 public class PolicySelector {
     private final CompanyService companyService;

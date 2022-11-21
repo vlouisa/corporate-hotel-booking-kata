@@ -1,15 +1,15 @@
-package dev.louisa.kata.service;
+package dev.louisa.kata.policy.service;
 
-import dev.louisa.kata.domain.CompanyPolicy;
-import dev.louisa.kata.domain.EmployeePolicy;
-import dev.louisa.kata.repository.PolicyRepository;
+import dev.louisa.kata.policy.domain.CompanyPolicy;
+import dev.louisa.kata.policy.domain.EmployeePolicy;
+import dev.louisa.kata.policy.repository.PolicyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static dev.louisa.kata.domain.RoomType.*;
+import static dev.louisa.kata.policy.domain.RoomType.*;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
 

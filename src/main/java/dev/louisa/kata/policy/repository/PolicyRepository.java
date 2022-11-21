@@ -1,7 +1,7 @@
-package dev.louisa.kata.repository;
+package dev.louisa.kata.policy.repository;
 
-import dev.louisa.kata.domain.Policy;
-import dev.louisa.kata.domain.PolicyType;
+import dev.louisa.kata.policy.domain.Policy;
+import dev.louisa.kata.policy.domain.PolicyType;
 
 import java.util.ArrayList;
 import java.util.List;

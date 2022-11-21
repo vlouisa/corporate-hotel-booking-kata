@@ -1,11 +1,11 @@
 package dev.louisa.kata.acceptance;
 
-import dev.louisa.kata.domain.RoomType;
-import dev.louisa.kata.repository.EmployeeRepository;
-import dev.louisa.kata.repository.PolicyRepository;
-import dev.louisa.kata.service.BookingPolicyService;
-import dev.louisa.kata.service.CompanyService;
-import dev.louisa.kata.service.PolicySelector;
+import dev.louisa.kata.policy.domain.RoomType;
+import dev.louisa.kata.company.repository.EmployeeRepository;
+import dev.louisa.kata.policy.repository.PolicyRepository;
+import dev.louisa.kata.policy.service.BookingPolicyService;
+import dev.louisa.kata.company.service.CompanyService;
+import dev.louisa.kata.policy.service.PolicySelector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

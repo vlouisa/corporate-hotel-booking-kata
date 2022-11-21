@@ -1,4 +1,4 @@
-package dev.louisa.kata.exception;
+package dev.louisa.kata.company.exception;
 
 public class CompanyApiException extends RuntimeException {
 

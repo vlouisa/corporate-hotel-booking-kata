@@ -1,6 +1,6 @@
-package dev.louisa.kata.repository;
+package dev.louisa.kata.company.repository;
 
-import dev.louisa.kata.domain.Employee;
+import dev.louisa.kata.company.domain.Employee;
 
 import java.util.ArrayList;
 import java.util.List;

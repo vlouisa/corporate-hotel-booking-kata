@@ -1,8 +1,12 @@
-package dev.louisa.kata.service;
+package dev.louisa.kata.policy.service;
 
-import dev.louisa.kata.domain.*;
-import dev.louisa.kata.exception.CompanyApiException;
-import dev.louisa.kata.repository.PolicyRepository;
+import dev.louisa.kata.policy.domain.CompanyPolicy;
+import dev.louisa.kata.company.domain.Employee;
+import dev.louisa.kata.policy.domain.EmployeePolicy;
+import dev.louisa.kata.policy.domain.Policy;
+import dev.louisa.kata.company.exception.CompanyApiException;
+import dev.louisa.kata.company.service.CompanyService;
+import dev.louisa.kata.policy.repository.PolicyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static dev.louisa.kata.domain.PolicyType.*;
-import static dev.louisa.kata.domain.RoomType.*;
+import static dev.louisa.kata.policy.domain.PolicyType.*;
+import static dev.louisa.kata.policy.domain.RoomType.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

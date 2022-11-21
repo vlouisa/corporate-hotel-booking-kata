@@ -1,7 +1,10 @@
-package dev.louisa.kata.service;
+package dev.louisa.kata.policy.service;
 
-import dev.louisa.kata.domain.*;
-import dev.louisa.kata.repository.PolicyRepository;
+import dev.louisa.kata.policy.domain.CompanyPolicy;
+import dev.louisa.kata.policy.domain.EmployeePolicy;
+import dev.louisa.kata.policy.domain.Policy;
+import dev.louisa.kata.policy.domain.RoomType;
+import dev.louisa.kata.policy.repository.PolicyRepository;
 
 import java.util.Optional;
 

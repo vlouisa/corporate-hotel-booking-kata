@@ -1,14 +1,16 @@
-package dev.louisa.kata.repository;
+package dev.louisa.kata.policy.repository;
 
-import dev.louisa.kata.domain.*;
+import dev.louisa.kata.policy.domain.CompanyPolicy;
+import dev.louisa.kata.policy.domain.EmployeePolicy;
+import dev.louisa.kata.policy.domain.Policy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import static dev.louisa.kata.domain.PolicyType.*;
-import static dev.louisa.kata.domain.RoomType.*;
+import static dev.louisa.kata.policy.domain.PolicyType.*;
+import static dev.louisa.kata.policy.domain.RoomType.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
