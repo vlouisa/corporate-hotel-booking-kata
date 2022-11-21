@@ -3,11 +3,8 @@ package dev.louisa.kata.service;
 import dev.louisa.kata.domain.*;
 import dev.louisa.kata.repository.PolicyRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static dev.louisa.kata.domain.PolicyType.*;
 import static java.util.Arrays.asList;
 
 public class BookingPolicyService {
@@ -31,25 +28,10 @@ public class BookingPolicyService {
     }
 
     public boolean isBookingAllowed(String employeeId, RoomType roomType) {
-
-        final List<Policy> policies = new ArrayList<>();
-
-        if (policyRepository.findPolicyBy(employeeId, EMPLOYEE_POLICY).isPresent()) {
-            policies.add(policyRepository.findPolicyBy(employeeId, EMPLOYEE_POLICY).get());
-        }
-
-        final Optional<Employee> employee = companyService.fetchEmployee(employeeId);
-        if(employee.isPresent()) {
-            if (policyRepository.findPolicyBy(employee.get().getCompanyId(), COMPANY_POLICY).isPresent()) {
-                policies.add(policyRepository.findPolicyBy(employee.get().getCompanyId(), COMPANY_POLICY).get());
-            }
-        }
-        
-        if (policies.isEmpty()) {
-            return true;
-        }
-        
-        final Policy effectivePolicy = policies.get(0);
-        return effectivePolicy.getRoomTypes().contains(roomType);
+        PolicySelector policySelector = new PolicySelector(companyService, policyRepository);
+        final Optional<Policy> policy = policySelector.getApplicablePolicyForEmployee(employeeId);
+        return policy
+                .map(value -> value.getRoomTypes().contains(roomType))
+                .orElse(true);
     }
 }
