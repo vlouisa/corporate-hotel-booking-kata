@@ -3,8 +3,8 @@ package dev.louisa.kata.policy.service;
 import dev.louisa.kata.company.domain.Employee;
 import dev.louisa.kata.policy.domain.Policy;
 import dev.louisa.kata.policy.domain.PolicyType;
-import dev.louisa.kata.company.exception.CompanyApiException;
 import dev.louisa.kata.company.service.CompanyService;
+import dev.louisa.kata.policy.exception.PolicyApiException;
 import dev.louisa.kata.policy.repository.PolicyRepository;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class PolicySelector {
 
     private void validate(Optional<Employee> employee) {
         if (employee.isEmpty()) {
-            throw new CompanyApiException("Employee does not exist");
+            throw new PolicyApiException("Employee does not exist");
         }
     }
 

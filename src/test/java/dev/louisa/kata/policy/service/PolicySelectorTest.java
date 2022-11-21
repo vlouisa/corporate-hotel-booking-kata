@@ -4,8 +4,8 @@ import dev.louisa.kata.policy.domain.CompanyPolicy;
 import dev.louisa.kata.company.domain.Employee;
 import dev.louisa.kata.policy.domain.EmployeePolicy;
 import dev.louisa.kata.policy.domain.Policy;
-import dev.louisa.kata.company.exception.CompanyApiException;
 import dev.louisa.kata.company.service.CompanyService;
+import dev.louisa.kata.policy.exception.PolicyApiException;
 import dev.louisa.kata.policy.repository.PolicyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,7 +74,7 @@ class PolicySelectorTest {
         
         
         assertThatThrownBy(() -> policySelector.getApplicablePolicyForEmployee("MIKE"))
-                .isInstanceOf(CompanyApiException.class)
+                .isInstanceOf(PolicyApiException.class)
                 .hasMessage("Employee does not exist");
         
     }
