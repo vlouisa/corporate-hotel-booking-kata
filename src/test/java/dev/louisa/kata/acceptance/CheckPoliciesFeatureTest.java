@@ -1,6 +1,5 @@
 package dev.louisa.kata.acceptance;
 
-import dev.louisa.kata.policy.domain.RoomType;
 import dev.louisa.kata.company.repository.EmployeeRepository;
 import dev.louisa.kata.policy.repository.PolicyRepository;
 import dev.louisa.kata.policy.service.PolicyService;
@@ -9,8 +8,9 @@ import dev.louisa.kata.policy.service.PolicySelector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static dev.louisa.kata.acceptance.PolicyAsserter.*;
+import static dev.louisa.kata.acceptance.ScenarioBuilder.*;
+import static dev.louisa.kata.policy.domain.RoomType.*;
 
 public class CheckPoliciesFeatureTest {
     private static final String IBM = "IBM";
@@ -29,29 +29,57 @@ public class CheckPoliciesFeatureTest {
     void setUp() {
         final PolicyRepository policyRepository = new PolicyRepository();
         companyService = new CompanyService(new EmployeeRepository());
-        
         policyService = new PolicyService(policyRepository, new PolicySelector(companyService, policyRepository));
     }
 
     @Test
-    void checkPolicies() {
-        companyService.addEmployee(KEES, TESLA);
-        companyService.addEmployee(JAN, IBM);
-        companyService.addEmployee(SASKIA, TESLA);
-        companyService.addEmployee(IRIS, MICROSOFT);
-        
-        policyService.setCompanyPolicy(IBM, RoomType.SINGLE, RoomType.DOUBLE);
-        policyService.setCompanyPolicy(MICROSOFT, RoomType.SINGLE);
-        
-        policyService.setEmployeePolicy(SASKIA, RoomType.SINGLE, RoomType.DOUBLE);
-        policyService.setEmployeePolicy(IRIS, RoomType.SINGLE, RoomType.DOUBLE);
+    void checkOnlyEmployeePolicyScenario() {
+        scenario(policyService, companyService)
+                .addEmployee(SASKIA, TESLA)
+                .addEmployeePolicy(SASKIA, SINGLE, DOUBLE);
+ 
+        using(policyService)
+                .assertThat(SASKIA)
+                .isAllowedToBook(SINGLE, DOUBLE)
+                .isNotAllowedToBook(TRIPLE)
+                .assertAll();
+    }
 
-        assertTrue(policyService.isBookingAllowed(KEES, RoomType.EXECUTIVE));
-        assertTrue(policyService.isBookingAllowed(JAN, RoomType.SINGLE));
-        assertFalse(policyService.isBookingAllowed(JAN, RoomType.KING));
-        assertTrue(policyService.isBookingAllowed(SASKIA, RoomType.SINGLE));
-        assertFalse(policyService.isBookingAllowed(SASKIA, RoomType.TRIPLE));
-        assertTrue(policyService.isBookingAllowed(IRIS, RoomType.DOUBLE));
-        assertFalse(policyService.isBookingAllowed(IRIS, RoomType.QUEEN));
+    @Test
+    void checkEmployeeAndCompanyPolicyScenario() {
+        scenario(policyService, companyService)
+                .addEmployee(IRIS, MICROSOFT)
+                .addCompanyPolicy(MICROSOFT, SINGLE)
+                .addEmployeePolicy(IRIS, DOUBLE, EXECUTIVE);
+
+        using(policyService)
+                .assertThat(IRIS)
+                .isAllowedToBook(DOUBLE, EXECUTIVE)
+                .isNotAllowedToBook(SINGLE, QUEEN)
+                .assertAll();
+    }
+
+    @Test
+    void checkOnlyCompanyPolicyScenario() {
+        scenario(policyService, companyService)
+                .addEmployee(JAN, IBM)
+                .addCompanyPolicy(IBM, SINGLE, DOUBLE);
+        
+        using(policyService)
+                .assertThat(JAN)
+                .isAllowedToBook(SINGLE, DOUBLE)
+                .isNotAllowedToBook(KING)
+                .assertAll();
+    }
+    
+    @Test
+    void checkNoPoliciesScenario() {
+        scenario(policyService, companyService)
+            .addEmployee(KEES, TESLA);
+
+        using(policyService)
+                .assertThat(KEES)
+                .isAllowedToBook(EXECUTIVE)
+                .assertAll();
     }
 }
