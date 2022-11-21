@@ -14,28 +14,28 @@ import static java.util.Arrays.asList;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class BookingPolicyServiceTest {
+class PolicyServiceTest {
     
     @Mock
     private PolicyRepository policyRepository;
     @Mock
     private PolicySelector policySelector;
-    private BookingPolicyService bookingPolicyService;
+    private PolicyService policyService;
 
     @BeforeEach
     void setUp() {
-        bookingPolicyService = new BookingPolicyService(policyRepository, policySelector);
+        policyService = new PolicyService(policyRepository, policySelector);
     }
 
     @Test
     void should_store_a_company_policy() {
-        bookingPolicyService.setCompanyPolicy("GOOGLE", SINGLE, DOUBLE, KING);
+        policyService.setCompanyPolicy("GOOGLE", SINGLE, DOUBLE, KING);
         verify(policyRepository).save(new CompanyPolicy("GOOGLE", asList(SINGLE, DOUBLE, KING)));
     }
 
     @Test
     void should_store_an_employee_policy() {
-        bookingPolicyService.setEmployeePolicy("NICK", DOUBLE, KING);
+        policyService.setEmployeePolicy("NICK", DOUBLE, KING);
         verify(policyRepository).save(new EmployeePolicy("NICK", asList(DOUBLE, KING)));
     }
 }

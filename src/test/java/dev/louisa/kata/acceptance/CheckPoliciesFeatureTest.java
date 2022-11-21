@@ -3,7 +3,7 @@ package dev.louisa.kata.acceptance;
 import dev.louisa.kata.policy.domain.RoomType;
 import dev.louisa.kata.company.repository.EmployeeRepository;
 import dev.louisa.kata.policy.repository.PolicyRepository;
-import dev.louisa.kata.policy.service.BookingPolicyService;
+import dev.louisa.kata.policy.service.PolicyService;
 import dev.louisa.kata.company.service.CompanyService;
 import dev.louisa.kata.policy.service.PolicySelector;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,14 +23,14 @@ public class CheckPoliciesFeatureTest {
     private static final String IRIS = "IRIS";
 
     private CompanyService companyService;
-    private BookingPolicyService bookingPolicyService;
+    private PolicyService policyService;
 
     @BeforeEach
     void setUp() {
         final PolicyRepository policyRepository = new PolicyRepository();
         companyService = new CompanyService(new EmployeeRepository());
         
-        bookingPolicyService = new BookingPolicyService(policyRepository, new PolicySelector(companyService, policyRepository));
+        policyService = new PolicyService(policyRepository, new PolicySelector(companyService, policyRepository));
     }
 
     @Test
@@ -40,18 +40,18 @@ public class CheckPoliciesFeatureTest {
         companyService.addEmployee(SASKIA, TESLA);
         companyService.addEmployee(IRIS, MICROSOFT);
         
-        bookingPolicyService.setCompanyPolicy(IBM, RoomType.SINGLE, RoomType.DOUBLE);
-        bookingPolicyService.setCompanyPolicy(MICROSOFT, RoomType.SINGLE);
+        policyService.setCompanyPolicy(IBM, RoomType.SINGLE, RoomType.DOUBLE);
+        policyService.setCompanyPolicy(MICROSOFT, RoomType.SINGLE);
         
-        bookingPolicyService.setEmployeePolicy(SASKIA, RoomType.SINGLE, RoomType.DOUBLE);
-        bookingPolicyService.setEmployeePolicy(IRIS, RoomType.SINGLE, RoomType.DOUBLE);
+        policyService.setEmployeePolicy(SASKIA, RoomType.SINGLE, RoomType.DOUBLE);
+        policyService.setEmployeePolicy(IRIS, RoomType.SINGLE, RoomType.DOUBLE);
 
-        assertTrue(bookingPolicyService.isBookingAllowed(KEES, RoomType.EXECUTIVE));
-        assertTrue(bookingPolicyService.isBookingAllowed(JAN, RoomType.SINGLE));
-        assertFalse(bookingPolicyService.isBookingAllowed(JAN, RoomType.KING));
-        assertTrue(bookingPolicyService.isBookingAllowed(SASKIA, RoomType.SINGLE));
-        assertFalse(bookingPolicyService.isBookingAllowed(SASKIA, RoomType.TRIPLE));
-        assertTrue(bookingPolicyService.isBookingAllowed(IRIS, RoomType.DOUBLE));
-        assertFalse(bookingPolicyService.isBookingAllowed(IRIS, RoomType.QUEEN));
+        assertTrue(policyService.isBookingAllowed(KEES, RoomType.EXECUTIVE));
+        assertTrue(policyService.isBookingAllowed(JAN, RoomType.SINGLE));
+        assertFalse(policyService.isBookingAllowed(JAN, RoomType.KING));
+        assertTrue(policyService.isBookingAllowed(SASKIA, RoomType.SINGLE));
+        assertFalse(policyService.isBookingAllowed(SASKIA, RoomType.TRIPLE));
+        assertTrue(policyService.isBookingAllowed(IRIS, RoomType.DOUBLE));
+        assertFalse(policyService.isBookingAllowed(IRIS, RoomType.QUEEN));
     }
 }

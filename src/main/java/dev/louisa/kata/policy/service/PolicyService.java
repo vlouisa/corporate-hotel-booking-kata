@@ -10,12 +10,12 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
-public class BookingPolicyService {
+public class PolicyService {
 
     private final PolicyRepository policyRepository;
     private final PolicySelector policySelector;
     
-    public BookingPolicyService(PolicyRepository policyRepository, PolicySelector policySelector) {
+    public PolicyService(PolicyRepository policyRepository, PolicySelector policySelector) {
         this.policyRepository = policyRepository;
         this.policySelector = policySelector;
     }
