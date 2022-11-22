@@ -16,6 +16,8 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PolicyApiTest {
+    private static final CompanyPolicy GOOGLE_COMPANY_POLICY = new CompanyPolicy("GOOGLE", asList(SINGLE, DOUBLE, KING));
+    private static final EmployeePolicy EMPLOYEE_POLICY_OF_NICK = new EmployeePolicy("NICK", asList(DOUBLE, KING));
     
     @Mock
     private PolicyRepository policyRepository;
@@ -31,12 +33,12 @@ class PolicyApiTest {
     @Test
     void should_store_a_company_policy() {
         policyApi.setCompanyPolicy("GOOGLE", SINGLE, DOUBLE, KING);
-        verify(policyRepository).save(new CompanyPolicy("GOOGLE", asList(SINGLE, DOUBLE, KING)));
+        verify(policyRepository).save(GOOGLE_COMPANY_POLICY);
     }
 
     @Test
     void should_store_an_employee_policy() {
         policyApi.setEmployeePolicy("NICK", DOUBLE, KING);
-        verify(policyRepository).save(new EmployeePolicy("NICK", asList(DOUBLE, KING)));
+        verify(policyRepository).save(EMPLOYEE_POLICY_OF_NICK);
     }
 }

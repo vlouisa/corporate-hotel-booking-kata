@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CompanyApiTest {
 
+    public static final Employee EMPLOYEE_BAS = new Employee("BAS", "TESLA");
     @Mock
     private EmployeeRepository employeeRepository;
     private CompanyApi companyApi;
@@ -31,12 +32,12 @@ class CompanyApiTest {
     void should_store_a_new_employee() {
         companyApi.addEmployee("BAS", "TESLA");
         
-        verify(employeeRepository).save(new Employee("BAS", "TESLA"));
+        verify(employeeRepository).save(EMPLOYEE_BAS);
     }
     
     @Test
     void should_throw_exception_when_employee_already_exists() {
-        when(employeeRepository.findByEmployeeId("BAS")).thenReturn(Optional.of(new Employee("BAS","TESLA")));
+        when(employeeRepository.findByEmployeeId("BAS")).thenReturn(Optional.of(EMPLOYEE_BAS));
         
         assertThatThrownBy(() -> companyApi.addEmployee("BAS", "TESLA"))
                 .isInstanceOf(CompanyApiException.class)

@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class EmployeeRepositoryTest {
     private static final Optional<Employee> EMPLOYEE_BRUCE = Optional.of(new Employee("BRUCE", "HUDSON"));
-    private static final Optional<Object> NO_EMPLOYEE = Optional.empty();
+    private static final Optional<Employee> NO_EMPLOYEE = Optional.empty();
     
     private EmployeeRepository employeeRepository;
 
