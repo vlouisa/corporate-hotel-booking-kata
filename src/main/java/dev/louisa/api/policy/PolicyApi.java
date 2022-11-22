@@ -6,12 +6,13 @@ import dev.louisa.api.policy.domain.Policy;
 import dev.louisa.api.policy.domain.RoomType;
 import dev.louisa.api.policy.repository.PolicyRepository;
 import dev.louisa.api.policy.service.PolicySelector;
+import dev.louisa.api.shared.domain.ApiService;
 
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
-public class PolicyApi {
+public class PolicyApi implements ApiService {
 
     private final PolicyRepository policyRepository;
     private final PolicySelector policySelector;

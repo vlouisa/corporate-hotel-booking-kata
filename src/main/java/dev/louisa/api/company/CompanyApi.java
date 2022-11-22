@@ -1,12 +1,13 @@
 package dev.louisa.api.company;
 
+import dev.louisa.api.shared.domain.ApiService;
 import dev.louisa.api.shared.domain.Employee;
 import dev.louisa.api.company.exception.CompanyApiException;
 import dev.louisa.api.company.repository.EmployeeRepository;
 
 import java.util.Optional;
 
-public class CompanyApi {
+public class CompanyApi implements ApiService {
 
     private final EmployeeRepository employeeRepository;
 

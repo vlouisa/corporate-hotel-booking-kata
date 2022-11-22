@@ -16,7 +16,7 @@ public class CheckPoliciesFeatureTest {
     private static final String IBM = "IBM";
     private static final String TESLA = "TESLA";
     private static final String MICROSOFT = "MICROSOFT";
-    
+
     private static final String KEES = "KEES";
     private static final String JAN = "JAN";
     private static final String SASKIA = "SASKIA";
@@ -34,10 +34,11 @@ public class CheckPoliciesFeatureTest {
 
     @Test
     void checkOnlyEmployeePolicyScenario() {
-        scenario(policyApi, companyApi)
+        scenario()
+                .using(policyApi, companyApi)
                 .addEmployee(SASKIA, TESLA)
                 .addEmployeePolicy(SASKIA, SINGLE, DOUBLE);
- 
+
         using(policyApi)
                 .assertThat(SASKIA)
                 .isAllowedToBook(SINGLE, DOUBLE)
@@ -47,7 +48,8 @@ public class CheckPoliciesFeatureTest {
 
     @Test
     void checkEmployeeAndCompanyPolicyScenario() {
-        scenario(policyApi, companyApi)
+        scenario()
+                .using(policyApi, companyApi)
                 .addEmployee(IRIS, MICROSOFT)
                 .addCompanyPolicy(MICROSOFT, SINGLE)
                 .addEmployeePolicy(IRIS, DOUBLE, EXECUTIVE);
@@ -61,21 +63,23 @@ public class CheckPoliciesFeatureTest {
 
     @Test
     void checkOnlyCompanyPolicyScenario() {
-        scenario(policyApi, companyApi)
+        scenario()
+                .using(policyApi, companyApi)
                 .addEmployee(JAN, IBM)
                 .addCompanyPolicy(IBM, SINGLE, DOUBLE);
-        
+
         using(policyApi)
                 .assertThat(JAN)
                 .isAllowedToBook(SINGLE, DOUBLE)
                 .isNotAllowedToBook(KING)
                 .assertAll();
     }
-    
+
     @Test
     void checkNoPoliciesScenario() {
-        scenario(policyApi, companyApi)
-            .addEmployee(KEES, TESLA);
+        scenario()
+                .using(policyApi, companyApi)
+                .addEmployee(KEES, TESLA);
 
         using(policyApi)
                 .assertThat(KEES)
