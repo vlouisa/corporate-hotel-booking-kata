@@ -8,7 +8,6 @@ import dev.louisa.api.policy.service.PolicySelector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static dev.louisa.api.acceptance.PolicyAsserter.*;
 import static dev.louisa.api.acceptance.ScenarioBuilder.*;
 import static dev.louisa.api.policy.domain.RoomType.*;
 
@@ -37,13 +36,12 @@ public class CheckPoliciesFeatureTest {
         scenario()
                 .using(policyApi, companyApi)
                 .addEmployee(SASKIA, TESLA)
-                .addEmployeePolicy(SASKIA, SINGLE, DOUBLE);
-
-        using(policyApi)
+                .addEmployeePolicy(SASKIA, SINGLE, DOUBLE)
+                .then()
                 .assertThat(SASKIA)
                 .isAllowedToBook(SINGLE, DOUBLE)
                 .isNotAllowedToBook(TRIPLE)
-                .assertAll();
+                .execute();
     }
 
     @Test
@@ -52,13 +50,12 @@ public class CheckPoliciesFeatureTest {
                 .using(policyApi, companyApi)
                 .addEmployee(IRIS, MICROSOFT)
                 .addCompanyPolicy(MICROSOFT, SINGLE)
-                .addEmployeePolicy(IRIS, DOUBLE, EXECUTIVE);
-
-        using(policyApi)
+                .addEmployeePolicy(IRIS, DOUBLE, EXECUTIVE)
+                .then()
                 .assertThat(IRIS)
                 .isAllowedToBook(DOUBLE, EXECUTIVE)
-                .isNotAllowedToBook(SINGLE, QUEEN)
-                .assertAll();
+                .isNotAllowedToBook(SINGLE)
+                .execute();
     }
 
     @Test
@@ -66,24 +63,22 @@ public class CheckPoliciesFeatureTest {
         scenario()
                 .using(policyApi, companyApi)
                 .addEmployee(JAN, IBM)
-                .addCompanyPolicy(IBM, SINGLE, DOUBLE);
-
-        using(policyApi)
+                .addCompanyPolicy(IBM, SINGLE, DOUBLE)
+                .then()
                 .assertThat(JAN)
                 .isAllowedToBook(SINGLE, DOUBLE)
                 .isNotAllowedToBook(KING)
-                .assertAll();
+                .execute();
     }
 
     @Test
     void checkNoPoliciesScenario() {
         scenario()
                 .using(policyApi, companyApi)
-                .addEmployee(KEES, TESLA);
-
-        using(policyApi)
+                .addEmployee(KEES, TESLA)
+                .then()
                 .assertThat(KEES)
                 .isAllowedToBook(EXECUTIVE)
-                .assertAll();
+                .execute();
     }
 }
