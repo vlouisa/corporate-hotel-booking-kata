@@ -17,8 +17,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CompanyApiTest {
+    private static final Employee EMPLOYEE_BAS = new Employee("BAS", "TESLA");
 
-    public static final Employee EMPLOYEE_BAS = new Employee("BAS", "TESLA");
     @Mock
     private EmployeeRepository employeeRepository;
     private CompanyApi companyApi;
