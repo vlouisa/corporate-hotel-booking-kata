@@ -17,13 +17,11 @@ public class BookARoomFeatureTest {
     private ApiService bookingApi;
     private ApiService hotelApi;
 
-
     @BeforeEach
     void setUp() {
         hotelApi = new HotelApi();
         bookingApi = new BookingApi();
     }
-
 
     @Test
     void bookARoomWithoutPolicyCheck() {
