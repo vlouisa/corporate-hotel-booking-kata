@@ -1,9 +1,11 @@
 package dev.louisa.api.acceptance;
 
 import dev.louisa.api.company.CompanyApi;
+import dev.louisa.api.hotel.HotelApi;
 import dev.louisa.api.policy.PolicyApi;
 import dev.louisa.api.policy.domain.RoomType;
 import dev.louisa.api.shared.domain.ApiService;
+
 
 public class ScenarioAction extends Scenario {
     private final ApiService[] apiServices;
@@ -32,6 +34,18 @@ public class ScenarioAction extends Scenario {
     public ScenarioAction addEmployeePolicy(String employeeId, RoomType... roomTypes) {
         validate(policyApi, PolicyApi.class);
         policyApi.get().setEmployeePolicy(employeeId, roomTypes);
+        return this;
+    }
+
+    public ScenarioAction addHotel(String hotelId, String hotelName) {
+        validate(hotelApi, HotelApi.class);
+        hotelApi.get().addHotel(hotelId, hotelName);
+        return this;
+    }
+
+    public ScenarioAction setRoomType(String hotelId, RoomType roomType, int quantity) {
+        validate(hotelApi, HotelApi.class);
+        hotelApi.get().setRoomType(hotelId, roomType, quantity);
         return this;
     }
 
