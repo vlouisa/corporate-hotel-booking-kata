@@ -13,7 +13,7 @@ public class ScenarioAsserter extends Scenario {
         assign(apiServices);
     }
 
-    public static ScenarioAsserter using(ApiService ... apiServices) {
+    public static ScenarioAsserter createAssert(ApiService ... apiServices) {
         return new ScenarioAsserter(apiServices);
     }
 
