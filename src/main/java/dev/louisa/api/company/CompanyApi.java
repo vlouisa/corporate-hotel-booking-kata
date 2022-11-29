@@ -16,14 +16,15 @@ public class CompanyApi {
     
     public void addEmployee(String emplopyeeId, String companyId) {
         validate(emplopyeeId);
+    
         final Employee employee = new Employee(emplopyeeId, companyId);
         employeeRepository.save(employee);
     }
 
     private void validate(String emplopyeeId) {
-        if (employeeRepository.findByEmployeeId(emplopyeeId).isPresent()) {
-            throw new CompanyApiException("Employee already exists");
-        }
+        employeeRepository
+                .findByEmployeeId(emplopyeeId)
+                .ifPresent((employee) -> { throw new CompanyApiException("Employee already exists"); });
     }
 
     public Optional<Employee> fetchEmployee(String employeeId) {

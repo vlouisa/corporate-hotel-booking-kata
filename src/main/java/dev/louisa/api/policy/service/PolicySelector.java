@@ -21,21 +21,11 @@ public class PolicySelector {
     }
     
     public Optional<Policy> getApplicablePolicyForEmployee(String employeeId) {
-        final Optional<Employee> employee = getEmployeeBy(employeeId);
-        validate(employee);
+        final Optional<Employee> employee = getEmployeeBy(employeeId)
+                .or(() -> { throw new PolicyApiException("Employee does not exist"); });
 
-        final Optional<Policy> employeePolicy = getPolicyBy(employee.get().getEmployeeId(), EMPLOYEE_POLICY);
-        if (employeePolicy.isPresent()) {
-            return employeePolicy;
-        }
-
-        return getPolicyBy(employee.get().getCompanyId(), COMPANY_POLICY);
-    }
-
-    private void validate(Optional<Employee> employee) {
-        if (employee.isEmpty()) {
-            throw new PolicyApiException("Employee does not exist");
-        }
+        return getPolicyBy(employee.get().getEmployeeId(), EMPLOYEE_POLICY)
+                .or(() -> getPolicyBy(employee.get().getCompanyId(), COMPANY_POLICY)) ;
     }
 
     private Optional<Employee> getEmployeeBy(String employeeId) {
